@@ -23,7 +23,6 @@ var trainName;
 var destination;
 var firstTrainTime;
 var frequency;
-
 var nextArrival;
 var minutesAway;
 
@@ -34,7 +33,7 @@ database.ref().on("child_added", function (snapshot) {
 
     $("<tr><th>" + child.trainName + "</th><td>" + child.destination + "</td><td>" + 
     child.firstTrainTime + "</td><td>" + child.frequency + "</td><td>"+ child.nextArrival + 
-    "</td><td>" + child.minutesAway + "</td></tr>").appendTo("tbody");
+    "</td><tr>" + child.minutesAway).appendTo("tbody");
 
 
 // , function (errorObject) {
@@ -49,6 +48,10 @@ $("#submit").on("click", function (event) {
     frequency = $("#frequency").val().trim();
 
     console.log(trainName.valueOf());
+    var now = moment();
+    var start = moment().startOf('day');  
+    var hours = moment().date(1).hours(0).minutes(0).seconds(0)
+    console.log(start);
 
     database.ref().push({
         trainName: trainName,
