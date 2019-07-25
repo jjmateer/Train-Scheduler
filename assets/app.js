@@ -32,7 +32,7 @@ database.ref().on("child_added", function (snapshot) {
     child = snapshot.val();
 
     $("<tr><th>" + child.trainName + "</th><td>" + child.destination + "</td><td>" + 
-    child.firstTrainTime + "</td><td>" + child.frequency + "</td><td>"+ child.nextArrival + 
+    child.frequency + "</td><td>" + "fill in" + "</td><td>"+ child.nextArrival + 
     "</td><tr>" + child.minutesAway).appendTo("tbody");
 
 
@@ -51,8 +51,14 @@ $("#submit").on("click", function (event) {
     var now = moment();
     var start = moment().startOf('day');  
     var hours = moment().date(1).hours(0).minutes(0).seconds(0)
-    console.log(start);
-
+    var formattedTrainTime = moment(firstTrainTime).format("dddd, MMMM Do YYYY, h:mm:ss a");
+    var timeArr = firstTrainTime.split(":")
+    var hr = timeArr[0];
+    var min = timeArr[1];
+    var trainTime = moment().hours(hr).minutes(min);
+    console.log(trainTime);
+    var diff = trainTime.diff(moment(), 'minutes' );
+    console.log(diff);
     database.ref().push({
         trainName: trainName,
         destination: destination,
