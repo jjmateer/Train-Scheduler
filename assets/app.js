@@ -60,12 +60,10 @@ $("#submit").on("click", function (event) {
     var min = timeArr[1];
     var trainTime = moment().hours(hr).minutes(min);
     console.log(trainTime);
-    //Calculate the minutes between the train start time and the current time
-    var diff = moment(formattedTrainTime).diff(moment(now), 'minutes' );
-    // var tRemain = diff % frequency;
+    //Find the minute difference between the current time and the new arrival time.
+    var diff = moment(now).diff(moment(newArrival), 'minutes');
     console.log(diff);
-    //Add the difference in minutes to the current time to get the arrival time.
-    
+    //Add the frequency to the first train time to get the arrival time.
     var newArrival = moment(formattedTrainTime).add(frequency, "m").format("HH:mm: A");
     //Push the data to firebase.
     database.ref().push({
