@@ -32,8 +32,8 @@ database.ref().on("child_added", function (snapshot) {
     child = snapshot.val();
 
     $("<tr><th>" + child.trainName + "</th><td>" + child.destination + "</td><td>" + 
-    child.frequency + "</td><td>" + "fill in" + "</td><td>"+ child.nextArrival + 
-    "</td><tr>" + child.minutesAway).appendTo("tbody");
+    child.frequency + "</td><td>" + child.nextArrival + "</td><td>"+ child.minutesAway + 
+    "</td><tr>").appendTo("tbody");
 
 
 // , function (errorObject) {
@@ -42,28 +42,41 @@ database.ref().on("child_added", function (snapshot) {
 });
 $("#submit").on("click", function (event) {
     event.preventDefault();
+    //Get value from elements and trim them down
     trainName = $("#train-name").val().trim();
     destination = $("#destination").val().trim();
     firstTrainTime = $("#firstTrainTime").val().trim();
     frequency = $("#frequency").val().trim();
-
     console.log(trainName.valueOf());
+    //Variable for the current time
     var now = moment();
+    //Start the clock at 00:00 
     var start = moment().startOf('day');  
-    var hours = moment().date(1).hours(0).minutes(0).seconds(0)
-    var formattedTrainTime = moment(firstTrainTime).format("dddd, MMMM Do YYYY, h:mm:ss a");
+    // var hours = moment().date(1).hours(0).minutes(0).seconds(0)
+    //Format train time as a moment.js object
+    var formattedTrainTime = moment(firstTrainTime).format("dddd, MMMM Do YYYY, hh:mm:ss");
     var timeArr = firstTrainTime.split(":")
     var hr = timeArr[0];
     var min = timeArr[1];
     var trainTime = moment().hours(hr).minutes(min);
     console.log(trainTime);
+    //Calculate the minutes between the train start time and the current time
     var diff = trainTime.diff(moment(), 'minutes' );
     console.log(diff);
+    //Add the difference in minutes to the current time to get the arrival time.
+    var currentTime = moment().hours(hr).minutes(min);
+    var remainderTime = diff % frequency;
+    var timeLeft = frequency - remainderTime;
+    var newArrival = moment().add(timeLeft, "m").format("HH:mm: A");
+
+    //Push the data to firebase.
     database.ref().push({
         trainName: trainName,
         destination: destination,
         firstTrainTime: firstTrainTime,
-        frequency: frequency
+        frequency: frequency,
+        nextArrival: newArrival,
+        minutesAway: diff
     })
 });
 
