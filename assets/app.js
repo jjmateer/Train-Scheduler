@@ -50,25 +50,23 @@ $("#submit").on("click", function (event) {
     console.log(trainName.valueOf());
     //Variable for the current time
     var now = moment();
-    //Start the clock at 00:00 
-    var start = moment().startOf('day');  
+    // Start the clock at 00:00 
+    // var start = moment().startOf('day');  
     // var hours = moment().date(1).hours(0).minutes(0).seconds(0)
     //Format train time as a moment.js object
-    var formattedTrainTime = moment(firstTrainTime).format("dddd, MMMM Do YYYY, hh:mm:ss");
+    var formattedTrainTime = moment(firstTrainTime, "hh:mm");
     var timeArr = firstTrainTime.split(":")
     var hr = timeArr[0];
     var min = timeArr[1];
     var trainTime = moment().hours(hr).minutes(min);
     console.log(trainTime);
     //Calculate the minutes between the train start time and the current time
-    var diff = trainTime.diff(moment(), 'minutes' );
+    var diff = moment(trainTime).diff(moment(formattedTrainTime), 'minutes' );
+    // var tRemain = diff % frequency;
     console.log(diff);
     //Add the difference in minutes to the current time to get the arrival time.
-    var currentTime = moment().hours(hr).minutes(min);
-    var remainderTime = diff % frequency;
-    var timeLeft = frequency - remainderTime;
-    var newArrival = moment().add(timeLeft, "m").format("HH:mm: A");
-
+    
+    var newArrival = moment(formattedTrainTime).add(frequency, "m").format("HH:mm: A");
     //Push the data to firebase.
     database.ref().push({
         trainName: trainName,
