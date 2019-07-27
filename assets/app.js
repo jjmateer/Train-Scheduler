@@ -61,7 +61,7 @@ $("#submit").on("click", function (event) {
     var trainTime = moment().hours(hr).minutes(min);
     console.log(trainTime);
     //Calculate the minutes between the train start time and the current time
-    var diff = moment(trainTime).diff(moment(formattedTrainTime), 'minutes' );
+    var diff = moment(formattedTrainTime).diff(moment(now), 'minutes' );
     // var tRemain = diff % frequency;
     console.log(diff);
     //Add the difference in minutes to the current time to get the arrival time.
