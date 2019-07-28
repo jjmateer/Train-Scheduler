@@ -11,14 +11,8 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 var database = firebase.database();
-// Train Name
-// Destination 
-// First Train Time -- in military time
-// Frequency -- in minutes
-// Code this app to calculate when the next train will arrive; this should be relative to the current time.
-// Users from many different machines must be able to view same train times.
-// Styling and theme are completely up to you. Get Creative!
 
+//Create variables to store data and push to firebase
 var trainName;
 var destination;
 var firstTrainTime;
@@ -26,53 +20,65 @@ var frequency;
 var nextArrival;
 var minutesAway;
 
-
+//When a child is added, display train info on the table
 database.ref().on("child_added", function (snapshot) {
     console.log(snapshot.val())
     child = snapshot.val();
 
-    $("<tr><th>" + child.trainName + "</th><td>" + child.destination + "</td><td>" + 
-    child.frequency + "</td><td>" + child.nextArrival + "</td><td>"+ child.minutesAway + 
-    "</td><tr>").appendTo("tbody");
+    $("<tr><th>" + child.trainName + "</th><td>" + child.destination + "</td><td>" +
+        child.frequency + "</td><td>" + child.nextArrival + "</td><td>" + child.minutesAway +
+        "</td><tr>").appendTo("tbody");
 
-
-// , function (errorObject) {
-//     console.log("error " + errorObject.code);
-// 
 });
+//When the submit button is clicked, extract value and trim down data from variables
 $("#submit").on("click", function (event) {
     event.preventDefault();
     //Get value from elements and trim them down
     trainName = $("#train-name").val().trim();
     destination = $("#destination").val().trim();
     firstTrainTime = $("#firstTrainTime").val().trim();
-    frequency = $("#frequency").val().trim();
-    console.log(trainName.valueOf());
-    //Variable for the current time
+    var frequency = $("#frequency").val().trim();
+
+
+
+    console.log(formattedTrainTime);
+    console.log(now);
+    console.log(minuteDiff);
+    console.log(tRemainder);
+    console.log(tMinutesTillTrain);
+    console.log(nextArrival);
+
+    // Initial train time
+    var formattedTrainTime = moment(firstTrainTime, "HH:mm");
+
+    // Current Time
     var now = moment();
-    // Start the clock at 00:00 
-    // var start = moment().startOf('day');  
-    // var hours = moment().date(1).hours(0).minutes(0).seconds(0)
-    //Format train time as a moment.js object
-    var formattedTrainTime = moment(firstTrainTime, "hh:mm");
-    var timeArr = firstTrainTime.split(":")
-    var hr = timeArr[0];
-    var min = timeArr[1];
-    var trainTime = moment().hours(hr).minutes(min);
-    console.log(trainTime);
-    //Find the minute difference between the current time and the new arrival time.
-    var diff = moment(now).diff(moment(newArrival), 'minutes');
-    console.log(diff);
-    //Add the frequency to the first train time to get the arrival time.
-    var newArrival = moment(formattedTrainTime).add(frequency, "m").format("HH:mm: A");
+
+
+    // Difference between current time and first train time
+    var minuteDiff = moment().diff(moment(formattedTrainTime), "minutes");
+
+
+    // The remainder of current time and initial train time
+    var tRemainder = minuteDiff % frequency;
+
+
+    // Remainding time untill next train arrives
+    var tMinutesTillTrain = frequency - tRemainder;
+
+
+    // Arrival time
+    var nextArrival = moment().add(tMinutesTillTrain, "minutes");
+    var formattedTime = moment(nextArrival).format("HH:mm");
+
     //Push the data to firebase.
     database.ref().push({
         trainName: trainName,
         destination: destination,
         firstTrainTime: firstTrainTime,
         frequency: frequency,
-        nextArrival: newArrival,
-        minutesAway: diff
+        nextArrival: formattedTime,
+        minutesAway: tMinutesTillTrain
     })
 });
 
