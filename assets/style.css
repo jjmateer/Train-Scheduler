@@ -1,0 +1,17 @@
+body{
+    padding:2.5%;
+}
+#topTitle{
+    background-color: darkgray;
+    color:white;
+}
+#trainInput{
+    background-color:darkgrey;
+    color:white;
+}
+#submit{
+    background-color: dimgrey;
+}
+#clear{
+    background-color:dimgrey;
+}
