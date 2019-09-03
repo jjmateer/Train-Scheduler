@@ -1,19 +1,27 @@
 
 body{
     padding:2.5%;
+    background-color:darkblue;
 }
 #topTitle{
     background-color: darkgray;
     color:black;
+    border-radius:25px;
 }
 #trainInput{
     background-color:darkgrey;
+    border-radius:25px;
+}
+.table{
+    border-radius:25px;
 }
 #submit{
     background-color: dimgrey;
     color:white;
+    border-radius:25px;
 }
 #clear{
     background-color:dimgrey;
     color:white;
+    border-radius:25px;
 }

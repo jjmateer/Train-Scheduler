@@ -63,7 +63,7 @@ $("#submit").on("click", function (event) {
     var tRemainder = minuteDiff % frequency;
 
 
-    // Remainding time untill next train arrives
+    // Remainding time until next train arrives
     var tMinutesTillTrain = frequency - tRemainder;
 
 
