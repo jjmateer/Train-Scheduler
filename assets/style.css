@@ -1,12 +1,18 @@
 
 body{
     padding:2.5%;
-    background-color:darkblue;
 }
 #topTitle{
     background-color: darkgray;
     color:black;
     border-radius:25px;
+    padding-left:30%;
+    padding-right:30%;
+}
+.display-4{
+    background-size: auto;
+    background-repeat: no-repeat;
+    width:700px;
 }
 #trainInput{
     background-color:darkgrey;
