@@ -13,11 +13,6 @@ p.lead{
     font-size:25px;
     width: 900px;
 }
-.display-4{
-    background-size: auto;
-    background-repeat: no-repeat !important;
-    width:700px !important;
-}
 #trainInput{
     background-color:darkgrey;
     border-radius:25px;
