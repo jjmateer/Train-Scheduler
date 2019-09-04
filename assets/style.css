@@ -4,10 +4,14 @@ body{
 }
 #topTitle{
     background-color: darkgray;
-    color:black;
     border-radius:25px;
     padding-left:30%;
     padding-right:30%;
+}
+p.lead{
+    color:white;
+    font-size:25px;
+    width: 900px;
 }
 .display-4{
     background-size: auto;
